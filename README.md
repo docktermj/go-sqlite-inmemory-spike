@@ -1,82 +1,19 @@
 # go-sqlite-inmemory-spike
 
-If you are beginning your journey with [Senzing],
-please start with [Senzing Quick Start guides].
+A spike to rectify SQLite in-memory connection string issues.
 
-You are in the [Senzing Garage] where projects are "tinkered" on.
-Although this GitHub repository may help you understand an approach to using Senzing,
-it's not considered to be "production ready" and is not considered to be part of the Senzing product.
-Heck, it may not even be appropriate for your application of Senzing!
+## Recreate using command line
 
-## :warning: WARNING: go-sqlite-inmemory-spike is still in development :warning: _
+1. Run:
 
-At the moment, this is "work-in-progress" with Semantic Versions of `0.n.x`.
-Although it can be reviewed and commented on,
-the recommendation is not to use it yet.
+    ```console
+    go run main.go
+    ```
 
-## Synopsis
+## Recreate using Make
 
-The go-sqlite-inmemory-spike repository serves as a starting point for new repositories hosting Go code.
-It also shows best practices that can be retro-fitted into existing repositories hosting Go code.
+1. Run:
 
-[![Go Reference Badge]][Package reference]
-[![Go Report Card Badge]][Go Report Card]
-[![License Badge]][License]
-[![go-test-linux.yaml Badge]][go-test-linux.yaml]
-[![go-test-darwin.yaml Badge]][go-test-darwin.yaml]
-[![go-test-windows.yaml Badge]][go-test-windows.yaml]
-
-[![golangci-lint.yaml Badge]][golangci-lint.yaml]
-
-## Overview
-
-Aspects of the go-sqlite-inmemory-spike repository:
-
-1. **Badges:** Example badges can be seen above.
-1. **Makefile:** Simplifies development lifecycle commands.
-1. **Sample code:** `main.go` and `examplepackage` code examples.
-1. **Sample test cases:** `*_test.go` files showing how to write and document test cases.
-1. **Sample documentation:** Documentation style conducive to the [Go Package library].
-1. **Dockerfile:** Containerizing the Go program.
-1. **RPM/DEB builds:** Using `package.Dockerfile` to build `RPM` and `DEB` files for installation.
-1. **.github/workflows:** GitActions tailored to Go programming.
-1. **.github/dependabot.yml** Specifications for keeping Go dependencies up-to-date.
-
-## Use
-
-See [main.go] for an example of use.
-
-## References
-
-1. [API documentation]
-1. [Development]
-1. [Errors]
-1. [Examples]
-1. [Package reference]
-1. Related artifacts:
-    1. [DockerHub]
-
-[API documentation]: https://pkg.go.dev/github.com/senzing-garage/go-sqlite-inmemory-spike
-[Development]: docs/development.md
-[DockerHub]: https://hub.docker.com/r/senzing/go-sqlite-inmemory-spike
-[Errors]: docs/errors.md
-[Examples]: docs/examples.md
-[Go Package library]: https://pkg.go.dev
-[Go Reference Badge]: https://pkg.go.dev/badge/github.com/senzing-garage/go-sqlite-inmemory-spike.svg
-[Go Report Card Badge]: https://goreportcard.com/badge/github.com/senzing-garage/go-sqlite-inmemory-spike
-[Go Report Card]: https://goreportcard.com/report/github.com/senzing-garage/go-sqlite-inmemory-spike
-[go-test-darwin.yaml Badge]: https://github.com/senzing-garage/go-sqlite-inmemory-spike/actions/workflows/go-test-darwin.yaml/badge.svg
-[go-test-darwin.yaml]: https://github.com/senzing-garage/go-sqlite-inmemory-spike/actions/workflows/go-test-darwin.yaml
-[go-test-linux.yaml Badge]: https://github.com/senzing-garage/go-sqlite-inmemory-spike/actions/workflows/go-test-linux.yaml/badge.svg
-[go-test-linux.yaml]: https://github.com/senzing-garage/go-sqlite-inmemory-spike/actions/workflows/go-test-linux.yaml
-[go-test-windows.yaml Badge]: https://github.com/senzing-garage/go-sqlite-inmemory-spike/actions/workflows/go-test-windows.yaml/badge.svg
-[go-test-windows.yaml]: https://github.com/senzing-garage/go-sqlite-inmemory-spike/actions/workflows/go-test-windows.yaml
-[golangci-lint.yaml Badge]: https://github.com/senzing-garage/go-sqlite-inmemory-spike/actions/workflows/golangci-lint.yaml/badge.svg
-[golangci-lint.yaml]: https://github.com/senzing-garage/go-sqlite-inmemory-spike/actions/workflows/golangci-lint.yaml
-[License Badge]: https://img.shields.io/badge/License-Apache2-brightgreen.svg
-[License]: https://github.com/senzing-garage/go-sqlite-inmemory-spike/blob/main/LICENSE
-[main.go]: main.go
-[Package reference]: https://pkg.go.dev/github.com/senzing-garage/go-sqlite-inmemory-spike
-[Senzing Garage]: https://github.com/senzing-garage
-[Senzing Quick Start guides]: https://docs.senzing.com/quickstart/
-[Senzing]: https://senzing.com/
+    ```console
+    make clean setup test
+    ```
