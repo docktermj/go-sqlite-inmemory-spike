@@ -34,6 +34,10 @@ func main() {
 		senzingSettings = `{"PIPELINE":{"CONFIGPATH":"/etc/opt/senzing","RESOURCEPATH":"/opt/senzing/er/resources","SUPPORTPATH":"/opt/senzing/data"},"SQL":{"CONNECTION": "` + DatabaseURL + `"}}`
 	)
 
+	// ------------------------------------------------------------------------
+	// -- Install Senzing schema via Go
+	// ------------------------------------------------------------------------
+
 	// Open a connection to the SQLite database.
 
 	parsedURL, err := url.Parse(DatabaseURL)
@@ -68,26 +72,34 @@ func main() {
 		_, err := database.ExecContext(ctx, sqlText)
 		if err != nil {
 			scanFailure++
+			fmt.Printf(">>>>> Error: %s\n", err.Error())
 		}
 	}
 	onErrorPanic(scanner.Err())
 
-	// Verify database schema installed
+	// Verify database schema installed by listing tables.
 
 	listTable(database)
 
-	// Add Senzing Configuration.
+	// ------------------------------------------------------------------------
+	// -- Install Senzing configuration via Senzing binaries
+	// ------------------------------------------------------------------------
+
+	// Create Senzing AbstractFactory.
 
 	fmt.Printf(">>>>> senzingSettings: %s\n", senzingSettings)
 	szAbstractFactory, err := szfactorycreator.CreateCoreAbstractFactory("test", senzingSettings, 0, 0)
 	onErrorPanic(err)
 
+	// Get existing Senzing configuration. Expecting "0" for no configuration.
+
 	szConfigManager, err := szAbstractFactory.CreateSzConfigManager(ctx)
 	onErrorLog(err, "szAbstractFactory.CreateSzConfigManager")
 	oldConfigID, err := szConfigManager.GetDefaultConfigID(ctx)
 	onErrorLog(err, "szConfigManager.GetDefaultConfigID")
-
 	fmt.Printf(">>>>> Old Configuration id: %d\n", oldConfigID)
+
+	// Persist New Senzing configuration.
 
 	szConfig, err := szAbstractFactory.CreateSzConfig(ctx)
 	onErrorPanic(err)
@@ -100,7 +112,6 @@ func main() {
 	onErrorLog(err, "szConfigManager.AddConfig")
 	err = szConfigManager.SetDefaultConfigID(ctx, newConfigID)
 	onErrorLog(err, "szConfigManager.SetDefaultConfigID")
-
 	fmt.Printf(">>>>> New Configuration id: %d\n", newConfigID)
 
 	// Verify database is still available.
