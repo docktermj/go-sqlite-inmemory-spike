@@ -1,0 +1,19 @@
+name: Go proxy pull
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+permissions:
+  contents: write
+
+jobs:
+  go-proxy-pull:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pull new module version
+        uses: andrewslotin/go-proxy-pull-action@v1.2.0
+        with:
+          import_path: github.com/${{ github.repository }}
