@@ -25,3 +25,9 @@ A spike to rectify SQLite in-memory connection string issues.
     ```console
     make clean setup test
     ```
+
+## References
+
+- [Development]
+
+[Development]: docs/development.md
