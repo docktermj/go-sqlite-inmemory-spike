@@ -105,7 +105,7 @@ setup: setup-osarch-specific
 # -----------------------------------------------------------------------------
 
 .PHONY: lint
-lint: golangci-lint
+lint: golangci-lint pylint mypy bandit black flake8 isort
 
 # -----------------------------------------------------------------------------
 # Build
@@ -171,7 +171,7 @@ test: test-osarch-specific
 
 .PHONY: docker-test
 docker-test:
-	@docker-compose -f docker-compose.test.yaml up
+	@$(activate-venv); docker-compose -f docker-compose.test.yaml up
 
 # -----------------------------------------------------------------------------
 # Coverage
@@ -260,3 +260,57 @@ update-pkg-cache:
 .PHONY: golangci-lint
 golangci-lint:
 	@${GOBIN}/golangci-lint run --config=.github/linters/.golangci.yaml
+
+
+.PHONY: bandit
+bandit:
+	$(info --- bandit ---------------------------------------------------------------------)
+	@$(activate-venv); bandit -c pyproject.toml $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
+.PHONY: black
+black:
+	$(info --- black ----------------------------------------------------------------------)
+	@$(activate-venv); black $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
+.PHONY: flake8
+flake8:
+	$(info --- flake8 ---------------------------------------------------------------------)
+	@$(activate-venv); flake8 $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
+.PHONY: isort
+isort:
+	$(info --- isort ----------------------------------------------------------------------)
+	@$(activate-venv); isort $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
+.PHONY: mypy
+mypy:
+	$(info --- mypy -----------------------------------------------------------------------)
+	@$(activate-venv); mypy --strict $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
+.PHONY: pydoc
+pydoc:
+	$(info --- pydoc ----------------------------------------------------------------------)
+	@$(activate-venv); python3 -m pydoc
+
+
+.PHONY: pydoc-web
+pydoc-web:
+	$(info --- pydoc-web ------------------------------------------------------------------)
+	@$(activate-venv); python3 -m pydoc -p 8885
+
+
+.PHONY: pylint
+pylint:
+	$(info --- pylint ---------------------------------------------------------------------)
+	@$(activate-venv); pylint $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
+.PHONY: pytest
+pytest:
+	$(info --- pytest ---------------------------------------------------------------------)
+	@$(activate-venv); pytest $(shell git ls-files '*.py' ':!:docs/source/*')

@@ -145,6 +145,7 @@ func listTable(database *sql.DB, dataabaseName string) {
 	)
 	sqlRows, err := database.Query("SELECT name FROM sqlite_master WHERE type='table';")
 	onErrorPanic(err)
+	onErrorPanic(sqlRows.Err())
 	defer sqlRows.Close()
 
 	fmt.Printf(">>>>> tables for %s\n", dataabaseName)

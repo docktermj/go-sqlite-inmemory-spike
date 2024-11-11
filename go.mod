@@ -18,7 +18,7 @@ require (
 	github.com/senzing-garage/sz-sdk-go-grpc v0.8.4 // indirect
 	github.com/senzing-garage/sz-sdk-go-mock v0.8.3 // indirect
 	github.com/senzing-garage/sz-sdk-proto v0.7.10 // indirect
-	golang.org/x/exp v0.0.0-20241009180824-f66d83c29e7c // indirect
+	golang.org/x/exp v0.0.0-20241108190413-2d47ceb2692f // indirect
 	golang.org/x/net v0.31.0 // indirect
 	golang.org/x/sys v0.27.0 // indirect
 	golang.org/x/text v0.20.0 // indirect
