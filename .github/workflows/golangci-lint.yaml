@@ -1,0 +1,59 @@
+name: Golangci lint
+
+on:
+  push:
+    branches-ignore: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  # Required: allow read access to the content for analysis.
+  contents: read
+  # Optional: allow read access to pull request. Use with `only-new-issues` option.
+  pull-requests: read
+
+jobs:
+  golangci:
+    name: lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Senzing API
+        uses: senzing-factory/github-action-install-senzing-api@v4
+        with:
+          senzingapi-version: staging-v4
+
+      - name: Copy Senzing headers
+        run: |
+          mkdir --parents ./szconfig/szhelpers
+          cp /opt/senzing/er/sdk/c/*.h ./szconfig/
+          cp /opt/senzing/er/sdk/c/szhelpers/*.h ./szconfig/szhelpers
+          mkdir --parents ./szconfigmanager/szhelpers
+          cp /opt/senzing/er/sdk/c/*.h ./szconfigmanager/
+          cp /opt/senzing/er/sdk/c/szhelpers/*.h ./szconfigmanager/szhelpers
+          mkdir --parents ./szdiagnostic/szhelpers
+          cp /opt/senzing/er/sdk/c/*.h ./szdiagnostic/
+          cp /opt/senzing/er/sdk/c/szhelpers/*.h ./szdiagnostic/szhelpers
+          mkdir --parents ./szengine/szhelpers
+          cp /opt/senzing/er/sdk/c/*.h ./szengine/
+          cp /opt/senzing/er/sdk/c/szhelpers/*.h ./szengine/szhelpers
+          mkdir --parents ./szproduct/szhelpers
+          cp /opt/senzing/er/sdk/c/*.h ./szproduct/
+          cp /opt/senzing/er/sdk/c/szhelpers/*.h ./szproduct/szhelpers
+
+      - name: Setup go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.21
+
+      - name: Perform linting
+        uses: golangci/golangci-lint-action@v6
+        with:
+          args: --config=${{ github.workspace }}/.github/linters/.golangci.yaml
+          only-new-issues: false
+          version: latest

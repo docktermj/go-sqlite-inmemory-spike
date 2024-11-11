@@ -19,7 +19,21 @@
 
 # Go workspace file
 go.work
-go.work.sum
 
-# env file
-.env
+# macOS artifacts
+.DS_STORE
+
+# Visual Studio code
+.vscode
+*.code-workspace
+.history
+
+# Makefile
+target/
+
+.coverage
+cover.out
+coverage.html
+coverage.out
+
+.venv
