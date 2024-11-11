@@ -1,5 +1,9 @@
 #! /usr/bin/env python3
 
+"""
+Test program.
+"""
+
 import sqlite3
 from urllib.parse import urlparse
 
