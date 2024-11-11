@@ -11,6 +11,8 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"reflect"
+	"strings"
 	"time"
 
 	sqlite "github.com/mattn/go-sqlite3"
@@ -18,10 +20,9 @@ import (
 )
 
 const (
-	// DatabaseURL = "sqlite3://na:na@/tmp/sqlite/mike.db?mode=memory&cache=shared"
-	// DatabaseURL = "sqlite3://na:na@/tmp/sqlite/mike.db"
-	DatabaseURL = "sqlite3://na:na@/MYPRIVATE_DB?mode=memory&cache=shared"
-	SQLfile     = "/opt/senzing/er/resources/schema/szcore-schema-sqlite-create.sql"
+	DatabaseURL = "sqlite3://na:na@/MYPRIVATE_DB?mode=memory&cache=shared" // Variation. Does not work.
+	// DatabaseURL = "sqlite3://na:na@nowhere/tmp/G2C.db" // Variation. Works
+	SQLfile = "/opt/senzing/er/resources/schema/szcore-schema-sqlite-create.sql"
 )
 
 func main() {
@@ -41,19 +42,23 @@ func main() {
 
 	parsedURL, err := url.Parse(DatabaseURL)
 	onErrorPanic(err)
-	connectionString := parsedURL.Path[1:]
+	connectionString := parsedURL.Path
 
 	if len(parsedURL.RawQuery) > 0 {
 		queryParameters := parsedURL.Query().Encode()
-		// escapedQueryParameters := url.QueryEscape(queryParameters)
-		connectionString = fmt.Sprintf("file:%s?%s", connectionString, queryParameters)
-
+		// connectionString = fmt.Sprintf("file:%s?%s", connectionString[1:], queryParameters)  // Variation
+		connectionString = fmt.Sprintf("file:%s?%s", connectionString, queryParameters) // Variation
 	}
 	fmt.Printf(">>>>> connectionString: %s\n", connectionString)
 	databaseConnector := &Sqlite{
 		ConnectionString: connectionString,
 	}
 	database := sql.OpenDB(databaseConnector)
+
+	fmt.Printf(">>>>> database.Stats: %v\n", database.Stats())
+
+	databaseReflection := reflect.ValueOf(database)
+	fmt.Printf(">>>>> databaseReflection: %+v\n", databaseReflection)
 
 	// Write to SQLite database from file.
 
@@ -79,14 +84,14 @@ func main() {
 
 	// Verify database schema installed by listing tables.
 
-	listTable(database, connectionString)
+	listTables(database, connectionString)
 
 	// Test of closing and opening database. This "erases" schema.
 
-	err = database.Close()
-	onErrorPanic(err)
-	database = sql.OpenDB(databaseConnector)
-	listTable(database, connectionString)
+	// err = database.Close()
+	// onErrorPanic(err)
+	// database = sql.OpenDB(databaseConnector)
+	// listTable(database, connectionString)
 
 	// ------------------------------------------------------------------------
 	// -- Install Senzing configuration via Senzing binaries
@@ -123,7 +128,7 @@ func main() {
 
 	// Verify database is still available.
 
-	listTable(database, connectionString)
+	listTables(database, connectionString)
 
 }
 
@@ -139,23 +144,21 @@ func onErrorPanic(err error) {
 	}
 }
 
-func listTable(database *sql.DB, dataabaseName string) {
-	var (
-		name = ""
-	)
+func listTables(database *sql.DB, databaseName string) {
+	var name = ""
 	sqlRows, err := database.Query("SELECT name FROM sqlite_master WHERE type='table';")
 	onErrorPanic(err)
 	onErrorPanic(sqlRows.Err())
 	defer sqlRows.Close()
-
-	fmt.Printf(">>>>> tables for %s\n", dataabaseName)
+	tables := []string{}
 	for sqlRows.Next() {
 		err := sqlRows.Scan(&name)
 		if err != nil {
 			onErrorLog(err, "sqlRows.Next()")
 		}
-		fmt.Printf(">>>>>   %s\n", name)
+		tables = append(tables, name)
 	}
+	fmt.Printf(">>>>> tables for %s: %s\n", databaseName, strings.Join(tables, ", "))
 }
 
 // ----------------------------------------------------------------------------

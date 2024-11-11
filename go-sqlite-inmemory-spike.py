@@ -4,6 +4,7 @@
 Test program.
 """
 
+import json
 import sqlite3
 from urllib.parse import urlparse
 
@@ -28,6 +29,11 @@ FACTORY_PARAMETERS: SzAbstractFactoryParameters = {
 database_url_parsed = urlparse(DATABASE_URL)
 connection_string = "file:" + database_url_parsed.path[1:] + "?mode=memory&cache=shared"
 database_connection = sqlite3.connect(connection_string, autocommit=True)
+
+# Debug: Print strings.
+
+print("connection_string:", connection_string)
+print("FACTORY_PARAMETERS:", json.dumps(FACTORY_PARAMETERS))
 
 # Create Senzing schema in database.
 
