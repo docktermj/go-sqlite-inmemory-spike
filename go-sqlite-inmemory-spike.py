@@ -7,11 +7,11 @@ Test program.
 import sqlite3
 from urllib.parse import urlparse
 
-from senzing import SzAbstractFactory
+from senzing import SzAbstractFactory, SzAbstractFactoryParameters
 
 DATABASE_URL = "sqlite3://na:na@/MYPRIVATE_DB?mode=memory&cache=shared"
 SQL_FILE = "/opt/senzing/er/resources/schema/szcore-schema-sqlite-create.sql"
-FACTORY_PARAMETERS = {
+FACTORY_PARAMETERS: SzAbstractFactoryParameters = {
     "instance_name": "Example",
     "settings": {
         "PIPELINE": {
@@ -32,7 +32,7 @@ database_connection = sqlite3.connect(connection_string, autocommit=True)
 # Create Senzing schema in database.
 
 database_cursor = database_connection.cursor()
-with open(SQL_FILE) as schema_file:
+with open(SQL_FILE, encoding="utf-8") as schema_file:
     for line in schema_file:
         line = line.strip()
         if not line:
