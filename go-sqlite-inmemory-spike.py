@@ -39,11 +39,11 @@ with open(SQL_FILE) as schema_file:
 
 sz_abstract_factory = SzAbstractFactory(**FACTORY_PARAMETERS)
 sz_config = sz_abstract_factory.create_sz_config()
-sz_config_manager = sz_abstract_factory.create_sz_configmanager()
+sz_configmanager = sz_abstract_factory.create_sz_configmanager()
 
 # Install default Senzing configuration.
 
 config_handle = sz_config.create_config()
 config_string = sz_config.export_config(config_handle)
-config_id = sz_config_manager.add_config(config_string, "Test comment")
-sz_config_manager.set_default_config_id(config_id)
+config_id = sz_configmanager.add_config(config_string, "Test comment")
+sz_configmanager.set_default_config_id(config_id)
