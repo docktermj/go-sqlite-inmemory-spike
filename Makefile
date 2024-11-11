@@ -69,19 +69,29 @@ hello-world: hello-world-osarch-specific
 # Dependency management
 # -----------------------------------------------------------------------------
 
+.PHONY: venv
+venv: venv-osarch-specific
+
+
 .PHONY: dependencies-for-development
-dependencies-for-development: dependencies-for-development-osarch-specific
+dependencies-for-development: venv dependencies-for-development-osarch-specific
 	@go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
 	@go install github.com/vladopajic/go-test-coverage/v2@latest
 	@go install golang.org/x/tools/cmd/godoc@latest
 	@docker-compose pull 2>/dev/null || true
+	$(activate-venv); \
+		python3 -m pip install --upgrade pip; \
+		python3 -m pip install --requirement development-requirements.txt
 
 
-.PHONY: dependencies
+.PHONY: dependencies venv
 dependencies:
 	@go get -u ./...
 	@go get -t -u ./...
 	@go mod tidy
+	$(activate-venv); \
+		python3 -m pip install --upgrade pip; \
+		python3 -m pip install --requirement requirements.txt
 
 # -----------------------------------------------------------------------------
 # Setup
