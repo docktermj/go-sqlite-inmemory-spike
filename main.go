@@ -11,7 +11,6 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"reflect"
 	"strings"
 	"time"
 
@@ -54,11 +53,6 @@ func main() {
 		ConnectionString: connectionString,
 	}
 	database := sql.OpenDB(databaseConnector)
-
-	fmt.Printf(">>>>> database.Stats: %v\n", database.Stats())
-
-	databaseReflection := reflect.ValueOf(database)
-	fmt.Printf(">>>>> databaseReflection: %+v\n", databaseReflection)
 
 	// Write to SQLite database from file.
 
