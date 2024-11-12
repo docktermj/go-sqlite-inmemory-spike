@@ -19,9 +19,10 @@ import (
 )
 
 const (
-	DatabaseURL = "sqlite3://na:na@/MYPRIVATE_DB?mode=memory&cache=shared" // Variation. Does not work.
 	// DatabaseURL = "sqlite3://na:na@nowhere/tmp/G2C.db" // Variation. Works
-	SQLfile = "/opt/senzing/er/resources/schema/szcore-schema-sqlite-create.sql"
+	// DatabaseURL = "sqlite3://na:na@/tmp/sqlite/G2C.db?mode=memory&cache=shared" // Variation. Works
+	DatabaseURL = "sqlite3://na:na@/MYPRIVATE_DB?mode=memory&cache=shared" // Variation. Works
+	SQLfile     = "testdata/sql/szcore-schema-sqlite-create.sql"
 )
 
 func main() {
@@ -45,8 +46,7 @@ func main() {
 
 	if len(parsedURL.RawQuery) > 0 {
 		queryParameters := parsedURL.Query().Encode()
-		// connectionString = fmt.Sprintf("file:%s?%s", connectionString[1:], queryParameters)  // Variation
-		connectionString = fmt.Sprintf("file:%s?%s", connectionString, queryParameters) // Variation
+		connectionString = fmt.Sprintf("file:%s?%s", connectionString[1:], queryParameters) // Variation
 	}
 	fmt.Printf(">>>>> connectionString: %s\n", connectionString)
 	databaseConnector := &Sqlite{
@@ -85,7 +85,7 @@ func main() {
 	// err = database.Close()
 	// onErrorPanic(err)
 	// database = sql.OpenDB(databaseConnector)
-	// listTable(database, connectionString)
+	// listTables(database, connectionString)
 
 	// ------------------------------------------------------------------------
 	// -- Install Senzing configuration via Senzing binaries
