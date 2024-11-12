@@ -2,11 +2,6 @@
  */
 package main
 
-/*
-#cgo CFLAGS: -DSQLITE_DEBUG=1
-*/
-import "C"
-
 import (
 	"bufio"
 	"context"
@@ -24,9 +19,10 @@ import (
 )
 
 const (
-	DatabaseURL = "sqlite3://na:na@/MYPRIVATE_DB?mode=memory&cache=shared" // Variation. Works
 	// DatabaseURL = "sqlite3://na:na@nowhere/tmp/G2C.db" // Variation. Works
-	SQLfile = "/opt/senzing/er/resources/schema/szcore-schema-sqlite-create.sql"
+	// DatabaseURL = "sqlite3://na:na@/tmp/sqlite/G2C.db?mode=memory&cache=shared" // Variation. Works
+	DatabaseURL = "sqlite3://na:na@/MYPRIVATE_DB?mode=memory&cache=shared" // Variation. Works
+	SQLfile     = "testdata/sql/szcore-schema-sqlite-create.sql"
 )
 
 func main() {
