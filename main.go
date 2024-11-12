@@ -3,10 +3,6 @@
 package main
 
 /*
-#ifndef SQLITE_OPEN_URI
-# define SQLITE_OPEN_URI 0
-#endif
-
 #cgo CFLAGS: -DSQLITE_DEBUG=1
 */
 import "C"
@@ -55,7 +51,7 @@ func main() {
 	if len(parsedURL.RawQuery) > 0 {
 		queryParameters := parsedURL.Query().Encode()
 		// connectionString = fmt.Sprintf("file:%s?%s", connectionString[1:], queryParameters)  // Variation
-		connectionString = fmt.Sprintf("file:%s?%s", connectionString, queryParameters) // Variation
+		connectionString = fmt.Sprintf("file:%s?%s", connectionString[1:], queryParameters) // Variation
 	}
 	fmt.Printf(">>>>> connectionString: %s\n", connectionString)
 	databaseConnector := &Sqlite{
