@@ -2,6 +2,15 @@
  */
 package main
 
+/*
+#ifndef SQLITE_OPEN_URI
+# define SQLITE_OPEN_URI 0
+#endif
+
+#cgo CFLAGS: -DSQLITE_DEBUG=1
+*/
+import "C"
+
 import (
 	"bufio"
 	"context"
